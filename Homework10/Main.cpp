@@ -48,91 +48,51 @@ void insertionSort(int arr[], int size) {
 
 }
 
-//param(array, size of arr, amount sorted (should be 0 - dividing line), recursive)
-void quicksort(int arr[], int size, bool done) {
-	
-	int rightMost = -1;
+/*Got help from online :^( Change later*/
+//part of the quicksort function(arr, left, rightMost)
+int partition(int arr[], int x, int y) {
 
-	//recursive
-	if (done) {
-		return;
-	}
+	int pivot = arr[y];    // pivot
+	int i = (x - 1);  // Index of smaller element
 
-	srand(time(NULL));
-
-	int pivPos = rand() % size;
-
-	int x = size-2;//right (beyond pivot)
-	int y = 0;//left
-
-	int pivot = arr[pivPos]; //random pivot
-
-	//move pivot to the right
-	int z = arr[pivPos]; //just holds the flipped int
-	arr[pivPos] = arr[size - 1];
-	arr[size - 1] = z;
-
-	while (x > y) {
-
-		if (arr[y] >= pivot && arr[x] <= pivot) {
-			//swap
-			z = arr[y];
-			arr[y] = arr[x];
-			arr[x] = z;
-			y++;
-			x--;
+	for (int j = x; j <= y - 1; j++)
+	{
+		// If current element is smaller than or
+		// equal to pivot
+		if (arr[j] <= pivot)
+		{
+			i++;    // increment index of smaller element
 			
-			cout << "Pivot: " << pivot << endl;
-			for (int i = 0; i < size; i++) {
-				cout << arr[i] << " ";
-			}
-			cout << "x:" << x;
-			cout << " y:" << y;
-			cout << endl;
+			int z = arr[j];
+			arr[j] = arr[i];
+			arr[i] = z;
 
-			continue;
 		}
-
-		if (arr[y] < pivot) {
-			y++;
-			continue;
-		}
-		else if (arr[x] > pivot) {
-			x--;
-		}
-
 	}
+	int z = arr[y];
+	arr[y] = arr[i+1];
+	arr[i+1] = z;
 
-	z = arr[x];
-	arr[x] = arr[size - 1];
-	arr[size - 1] = z;
+	return (i + 1);
 
+}
+//param(array, size of arr, amount sorted (should be 0 - dividing line), recursive)
+void quicksort(int arr[], int x, int y) {
 
-	int j = 0;
-	int i = 0;
-	while (j <= size) {
-		if (arr[j] < arr[j + 1]) {
-			i++;
+	if (x < y) {
+		//holds x pos...?
+		int z = partition(arr, x, y);
+
+		cout << "Partitioning..." << endl;
+		for (int i = 0; i < 15; i++) {
+			cout << arr[i] << " ";
 		}
-		else {
-			break;
-		}
-		j++;
+		cout << endl;
+
+		quicksort(arr, x, z - 1);
+		quicksort(arr, z + 1, y);
 	}
-
-	if (i == size) {
-		quicksort(arr, size, true);
-		return;
-	}
-
-
-	cout << endl;
-	cout << "Sorting...";
-	cout << endl;
-
-	quicksort(arr, size, done);
-	return;
-
+	
 }
 
 int main() {
@@ -158,6 +118,7 @@ int main() {
 	cout << endl;
 	/*INSERTION SORT*/
 
+	/*QUICKSORT*/
 	cout << "Before Quick Sort:" << endl;
 	for (int i = 0; i < 15; i++) {
 		cout << arr[i] << " ";
@@ -165,14 +126,16 @@ int main() {
 	cout << endl;
 
 	//quick sort
-	quicksort(arr, 15, false);
+	quicksort(arr, 0, 14);
 
 	cout << "After Quick Sort: " << endl;
 	for (int i = 0; i < 15; i++) {
 		cout << arr[i] << " ";
 	}
+	/*QUICKSORT*/
 
-	//merge sort
+	/*MERGESORT*/
+	/*MERGESORT*/
 
 
 
