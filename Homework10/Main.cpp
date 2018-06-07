@@ -1,5 +1,8 @@
 #include <iostream>
+#include<stdlib.h>
+#include<stdio.h>
 #include <time.h>
+#include <ctime>
 
 using namespace std;
 
@@ -31,7 +34,7 @@ void insertionSort(int arr[], int size) {
 
 		//reached end of arr
 		if (pos == size) {
-			
+
 			//does the swap
 			swappedInt = arr[lowestIntPos];
 			arr[lowestIntPos] = arr[y];
@@ -44,11 +47,7 @@ void insertionSort(int arr[], int size) {
 		}
 
 	}
-
-
 }
-
-/*Got help from online :^( Change later*/
 //part of the quicksort function(arr, left, rightMost)
 int partition(int arr[], int x, int y) {
 
@@ -94,13 +93,112 @@ void quicksort(int arr[], int x, int y) {
 	}
 	
 }
+void merge(int arr[], int l, int m, int r)
+{
+	int *L, *R;
+
+	int i, j, k;
+	int n1 = m - l + 1;
+	int n2 = r - m;
+
+	/* create temp arrays */
+	L = new int[n1]; R = new int[n2]; //this is never deleted:^(
+
+	/* Copy data to temp arrays L[] and R[] */
+	for (i = 0; i < n1; i++)
+		L[i] = arr[l + i];
+	for (j = 0; j < n2; j++)
+		R[j] = arr[m + 1 + j];
+
+	/* Merge the temp arrays back into arr[l..r]*/
+	i = 0; // Initial index of first subarray
+	j = 0; // Initial index of second subarray
+	k = l; // Initial index of merged subarray
+	while (i < n1 && j < n2)
+	{
+		if (L[i] <= R[j])
+		{
+			arr[k] = L[i];
+			i++;
+		}
+		else
+		{
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	/* Copy the remaining elements of L[], if there
+	are any */
+	while (i < n1)
+	{
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
+
+	/* Copy the remaining elements of R[], if there
+	are any */
+	while (j < n2)
+	{
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
+}
+
+/* l is for left index and r is right index of the
+sub-array of arr to be sorted */
+void mergeSort(int arr[], int l, int r)
+{
+	if (l < r)
+	{
+		// Same as (l+r)/2, but avoids overflow for
+		// large l and h
+		int m = l + (r - l) / 2;
+
+		// Sort first and second halves
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
+
+		merge(arr, l, m, r);
+	}
+}
+
+void timer()
+
+{
+
+	clock_t startTime;
+
+	clock_t endTime;
+
+	double runningTime;
+
+	start = clock();
+
+	//RUN THE THING YOU WANT TO TIME HERE!!!
+
+	end = clock();
+
+	runningTime = double(endTime) - double(startTime); //running time is now number of clock ticks on your system
+
+	runningTime /= CLOCKS_PER_SECOND; //runningTime is now the number of seconds in real time
+
+	cout << "\nIt took " << runningTime << " seconds to run the test.\n" << endl;
+
+}
 
 int main() {
 
 	srand(time(NULL));
 
+	int *arr = new int[10000];
 	
-	int arr[15] = {5, 3, 6, 2, 7, 1, 7, 8, 9 , 30, 10, 13, 5, 15 ,16};
+	for (int i = 0; i < 10000; i++) {
+		arr[i] = rand() % 500;
+	}
 
 	/*INSERTION SORT
 	cout << "Before sort:" << endl;
@@ -118,7 +216,7 @@ int main() {
 	cout << endl;
 	/*INSERTION SORT*/
 
-	/*QUICKSORT*/
+	/*QUICKSORT
 	cout << "Before Quick Sort:" << endl;
 	for (int i = 0; i < 15; i++) {
 		cout << arr[i] << " ";
@@ -135,6 +233,17 @@ int main() {
 	/*QUICKSORT*/
 
 	/*MERGESORT*/
+	cout << "Before Merge Sort: " << endl;
+	for (int i = 0; i < 10000; i++) {
+		cout << arr[i] << " ";
+	}
+
+	mergeSort(arr, 0, 9999);
+
+	cout << "After Merge Sort: " << endl;
+	for (int i = 0; i < 10000; i++) {
+		cout << arr[i] << " ";
+	}
 	/*MERGESORT*/
 
 
