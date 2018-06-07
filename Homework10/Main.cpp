@@ -49,36 +49,6 @@ void insertionSort(int arr[], int size) {
 }
 
 //param(array, size of arr, amount sorted (should be 0 - dividing line), recursive)
-
-int getMedian(int arr[], int size) {
-	int x = arr[0];
-	int y = arr[size / 2];
-	int z = arr[size-1];
-
-	if (x > y) {
-		if (z > x) {
-			return 0;
-		}
-
-		if (y > z) {
-			return (size / 2);
-		}
-	}
-	else {
-		//y > x
-
-		if (x > z) {
-			return 0;
-		}
-
-		if (z > y) {
-			return size / 2;
-		}
-
-	}
-
-	return size - 1;
-}
 void quicksort(int arr[], int size, bool done) {
 	
 	int rightMost = -1;
@@ -90,7 +60,7 @@ void quicksort(int arr[], int size, bool done) {
 
 	srand(time(NULL));
 
-	int pivPos = getMedian(arr, size);
+	int pivPos = rand() % size;
 
 	int x = size-2;//right (beyond pivot)
 	int y = 0;//left
@@ -103,41 +73,49 @@ void quicksort(int arr[], int size, bool done) {
 	arr[size - 1] = z;
 
 	while (x > y) {
-		cout << endl;
 
-		while (arr[y] < arr[y + 1] && y < size) {
+		if (arr[y] >= pivot && arr[x] <= pivot) {
+			//swap
+			z = arr[y];
+			arr[y] = arr[x];
+			arr[x] = z;
 			y++;
+			x--;
+			
+			cout << "Pivot: " << pivot << endl;
+			for (int i = 0; i < size; i++) {
+				cout << arr[i] << " ";
+			}
+			cout << "x:" << x;
+			cout << " y:" << y;
+			cout << endl;
+
+			continue;
 		}
-		while (arr[x] > arr[x - 1] && x > 0) {
+
+		if (arr[y] < pivot) {
+			y++;
+			continue;
+		}
+		else if (arr[x] > pivot) {
 			x--;
 		}
 
-		if (x < y) {
-			break;
-		}
-
-		//flip
-		z = arr[y];
-		arr[y] = arr[x];
-		arr[x] = z;
-		rightMost = x;
-		x--;
-		y++;
-
-		cout << "Pivot: " << pivot << endl;
-		for (int i = 0; i < size; i++) {
-			cout << arr[i] << " ";
-		}
-		cout << "x:" << x;
-		cout << " y:" << y;
-		cout << endl;
 	}
+
+	z = arr[x];
+	arr[x] = arr[size - 1];
+	arr[size - 1] = z;
+
 
 	int j = 0;
 	int i = 0;
 	while (j <= size) {
 		if (arr[j] < arr[j + 1]) {
 			i++;
+		}
+		else {
+			break;
 		}
 		j++;
 	}
@@ -147,10 +125,6 @@ void quicksort(int arr[], int size, bool done) {
 		return;
 	}
 
-	//flip left with pivot pos
-	z = arr[rightMost];
-	arr[rightMost] = arr[size - 1];
-	arr[size - 1] = z;
 
 	cout << endl;
 	cout << "Sorting...";
